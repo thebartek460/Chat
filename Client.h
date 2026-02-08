@@ -1,23 +1,22 @@
 #pragma once
 #include <string>
-#include <winsock2.h>
 
 namespace ChatClient {
 
     class Client {
-    private:
-        std::string host;
-        int port;
-        std::string nick;
-        SOCKET sock;
-
     public:
-        Client(const std::string& h, int p, const std::string& n);
+        Client(const std::string& host, int port, const std::string& nick);
         ~Client();
 
         bool connectToServer();
         void sendMessage(const std::string& msg);
         void receiveLoop();
+
+    private:
+        std::string host;
+        int port;
+        std::string nick;
+        int sock;
     };
 
 }

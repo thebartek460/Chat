@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include <iostream>
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
@@ -8,7 +8,8 @@ using namespace std;
 namespace ChatClient {
 
     Client::Client(const std::string& h, int p, const std::string& n)
-        : host(h), port(p), nick(n) {
+        : host(h), port(p), nick(n)
+    {
         WSADATA wsaData;
         WSAStartup(MAKEWORD(2, 2), &wsaData);
         sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -29,7 +30,7 @@ namespace ChatClient {
     }
 
     void Client::sendMessage(const std::string& msg) {
-        std::string msgWithNewline = msg + "\n";  
+        std::string msgWithNewline = msg + "\n";
         send(sock, msgWithNewline.c_str(), (int)msgWithNewline.size(), 0);
     }
 
@@ -44,7 +45,6 @@ namespace ChatClient {
             }
             string incomingMsg(buffer, bytesReceived);
             cout << "\r" << incomingMsg << endl;
-            cout << "> " << flush;
         }
     }
 
