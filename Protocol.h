@@ -1,43 +1,29 @@
 #pragma once
 #include <string>
+// USUNIÊTO: #include <json.hpp> - to powodowa³o b³êdy!
 
 namespace ChatShared {
 
-    // Struktura reprezentuj¹ca wiadomoœæ
     struct Message {
-        std::string type; // Typ wiadomoœci: "login", "message"
-        std::string from; // Nick nadawcy
-        std::string to;   // "all" albo konkretny nick
-        std::string text; // Has³o (login) lub treœæ wiadomoœci
+        std::string type; // "login", "join", "message", "private"
+        std::string from;
+        std::string to;   // kana³ lub nick
+        std::string text;
     };
 
-    // Zamiana wiadomoœci na "JSON-like" string
+    // Zmieniamy typ zwracany z 'nlohmann::json' na zwyk³y 'std::string'
     inline std::string messageToJson(const Message& msg) {
+        // Rêczne sklejanie tekstu, który wygl¹da jak JSON
+        // Np.: {"type":"login","from":"Jan","to":"","text":""}
+
         std::string json = "{";
         json += "\"type\":\"" + msg.type + "\",";
         json += "\"from\":\"" + msg.from + "\",";
         json += "\"to\":\"" + msg.to + "\",";
         json += "\"text\":\"" + msg.text + "\"";
         json += "}";
+
         return json;
-    }
-
-    // Pomocnicza funkcja do parsowania pola z JSON-like string
-    inline std::string extractField(const std::string& json, const std::string& key) {
-        std::string searchKey = "\"" + key + "\"";
-        size_t pos = json.find(searchKey);
-        if (pos == std::string::npos) return "";
-
-        pos = json.find(":", pos);
-        if (pos == std::string::npos) return "";
-
-        size_t startQuote = json.find("\"", pos);
-        if (startQuote == std::string::npos) return "";
-
-        size_t endQuote = json.find("\"", startQuote + 1);
-        if (endQuote == std::string::npos) return "";
-
-        return json.substr(startQuote + 1, endQuote - startQuote - 1);
     }
 
 } // namespace ChatShared
