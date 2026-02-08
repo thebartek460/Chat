@@ -1,4 +1,0 @@
-room.administracja
-room.programisci
-room.poczekalnia
-room.hr
